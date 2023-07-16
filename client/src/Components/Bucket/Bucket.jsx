@@ -70,7 +70,7 @@ const Bucket = () => {
         setData(updatedData);
         const { bucketCount } = await response.json();
         setBucketCount(bucketCount); // Update the bucketCount state with the new value
-        alert("Item deleted successfully!");
+       
       } else {
         throw new Error("Failed to delete the item.");
       }

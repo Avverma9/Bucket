@@ -1,5 +1,9 @@
 .card_signin {
   max-width: 400px;
+  background-image: url(https://cdn.dribbble.com/users/1767962/screenshots/5986027/signin.gif);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
   margin: 0 auto;
   padding: 20px;
   background-color: #f0f0f0;

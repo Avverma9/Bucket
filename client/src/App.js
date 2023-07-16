@@ -16,6 +16,7 @@ function App() {
     <Route path='/' Component={RegisterPage}/>
     <Route path='/bucket' Component={Bucket}/> <Route path='/login' Component={LoginPage}/>
    </Routes>
+  
    </Router>
   );
 }

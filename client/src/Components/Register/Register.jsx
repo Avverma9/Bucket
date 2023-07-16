@@ -60,7 +60,7 @@ const RegisterPage = () => {
         <div className="register-field">
           <label htmlFor="name">Name:</label>
           <input
-            type="text"
+           type="text-reg"
             id="name"
             value={name}
             onChange={(e) => setName(e.target.value)}
@@ -69,7 +69,7 @@ const RegisterPage = () => {
         <div className="register-field">
           <label htmlFor="email">Email:</label>
           <input
-            type="text"
+            type="text-reg"
             id="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -78,7 +78,7 @@ const RegisterPage = () => {
         <div className="register-field">
           <label htmlFor="mobile">Mobile:</label>
           <input
-            type="text"
+           type="text-reg"
             id="mobile"
             value={mobile}
             onChange={(e) => setMobile(e.target.value)}
@@ -87,7 +87,7 @@ const RegisterPage = () => {
         <div className="register-field">
           <label htmlFor="password">Password:</label>
           <input
-            type="text"
+            type="text-reg"
             id="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}

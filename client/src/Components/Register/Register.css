@@ -1,118 +1,148 @@
+/* Common styles for all screen sizes */
 .register-container {
-    max-width: 400px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f0f0f0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+  max-width: 700px;
+  margin: 0 auto;
+  background-image: url(https://cdn.dribbble.com/users/1917942/screenshots/7139971/media/d802dc4eadb049f5a9684759cfdfbffa.gif);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  padding: 15px;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.register-field {
+  margin-bottom: 10px;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #000000;
+}
+
+input[type="text-reg"],
+input[type="file"] {
+  width: 45%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+  color: #000000;
+}
+
+input[type="file"] {
+  width: 45%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+  color: #333;
+}
+
+.register-field:last-child input[type="file"] {
+  padding: 0;
+}
+
+.image-preview {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.circular-image {
+  border-radius: 50%;
+  width: 90px;
+  height: 90px;
+}
+
+button[type="submit"],
+button {
+  display: block;
+  width: 45%;
+  padding: 8px;
+  margin-top: 10px;
+  background-color: #4caf50;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  text-transform: uppercase;
+  transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover,
+button:hover {
+  background-image: linear-gradient(to right, #3dca2a, rgb(25, 59, 45));
+}
+
+div p {
+  text-align: center;
+  margin-top: 15px;
+  color: #000000;
+  font-size: 12px;
+}
+
+div button {
+  display: block;
+  width: 100%;
+  padding: 8px;
+  background-color: #f0f0f0;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  color: #000;
+  font-size: 12px;
+  transition: background-color 0.3s ease;
+}
+
+div button:hover {
+  background-color: #e0e0e0;
+}
+
+.error-message {
+  color: #ff0000;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+.success-message {
+  color: #006600;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+.invalid-input {
+  border-color: #ff0000;
+}
+
+.invalid-input:focus {
+  box-shadow: 0 0 3px #ff0000;
+}
+
+/* Media Query for screen sizes smaller than 768px (e.g., mobile devices) */
+@media (max-width: 768px) {
+  .register-container {
+    max-width: 100%;
+    padding: 10px;
   }
-  
-  h2 {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #333;
-  }
-  
-  .register-field {
-    margin-bottom: 15px;
-  }
-  
-  label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 5px;
-    color: #555;
-  }
-  
-  input[type="text"],
+
+  input[type="text-reg"],
   input[type="file"] {
     width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 14px;
-    color: #333;
   }
-  
-  .register-field:last-child input[type="file"] {
-    padding: 0;
-  }
-  
-  .image-preview {
-    text-align: center;
-    margin-bottom: 15px;
-  }
-  
-  .circular-image {
-    border-radius: 50%;
-    width: 100px;
-    height: 100px;
-  }
-  
+
   button[type="submit"],
   button {
-    display: block;
     width: 100%;
-    padding: 10px;
-    margin-top: 10px;
-    background-color: #4caf50;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: bold;
-    text-transform: uppercase;
-    transition: background-color 0.3s ease;
   }
-  
-  button[type="submit"]:hover,
-  button:hover {
-    background-image: linear-gradient(to right, #3dca2a, rgb(25, 59, 45));
-  }
-  
-  div p {
-    text-align: center;
-    margin-top: 20px;
-    color: #777;
-    font-size: 14px;
-  }
-  
-  div button {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    background-color: #f0f0f0;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    color: #000;
-    font-size: 14px;
-    transition: background-color 0.3s ease;
-  }
-  
-  div button:hover {
-    background-color: #e0e0e0;
-  }
-  
-  .error-message {
-    color: #ff0000;
-    font-size: 14px;
-    margin-top: 5px;
-  }
-  
-  .success-message {
-    color: #006600;
-    font-size: 14px;
-    margin-top: 5px;
-  }
-  
-  .invalid-input {
-    border-color: #ff0000;
-  }
-  
-  .invalid-input:focus {
-    box-shadow: 0 0 3px #ff0000;
-  }
-  
-  
+}
