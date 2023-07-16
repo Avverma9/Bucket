@@ -25,7 +25,7 @@ const RegisterPage = () => {
         userData.append("images", images[i]);
       }
 
-      const res = await fetch("http://localhost:5000/register", {
+      const res = await fetch("https://bucket-u67q.onrender.com/register", {
         method: "POST",
         body: userData,
       });
@@ -50,9 +50,9 @@ const RegisterPage = () => {
     };
     reader.readAsDataURL(files[0]);
   };
-const handleLogin=()=>{
-navigate("/login")
-}
+  const handleLogin = () => {
+    navigate("/login");
+  };
   return (
     <div className="register-container">
       <h2>Register</h2>
@@ -110,7 +110,9 @@ navigate("/login")
         <button type="submit">Sign Up</button>
       </form>
 
-      <div><p>Already have an account ?</p></div>
+      <div>
+        <p>Already have an account ?</p>
+      </div>
       <button onClick={handleLogin}> Sign in </button>
     </div>
   );

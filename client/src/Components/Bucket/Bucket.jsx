@@ -1,21 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import { useLocation,useNavigate } from 'react-router-dom';
-import { RiFileCopyLine, RiDeleteBinLine } from 'react-icons/ri';
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { RiFileCopyLine, RiDeleteBinLine } from "react-icons/ri";
 
-import 'bootstrap/dist/css/bootstrap.min.css';
-import './Bucket.css';
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./Bucket.css";
 
 const Bucket = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const location = useLocation();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [bucketCount, setBucketCount] = useState(0);
-  const isSigned = localStorage.getItem("isSigned")
-  const id = localStorage.getItem("id")
+  const isSigned = localStorage.getItem("isSigned");
+  const id = localStorage.getItem("id");
 
   const itemsPerPage = 15;
   const maxVisiblePages = 6;
@@ -23,9 +23,11 @@ const Bucket = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/bucket/${id}`);
+        const response = await fetch(
+          `https://bucket-u67q.onrender.com/bucket/${id}`
+        );
         if (!response.ok) {
-          throw new Error('Failed to fetch data from the backend.');
+          throw new Error("Failed to fetch data from the backend.");
         }
         const { buckets, bucketCount } = await response.json();
         setData(buckets);
@@ -36,18 +38,17 @@ const Bucket = () => {
         setLoading(false);
       }
     };
-    
-  
-    if (location.pathname === '/bucket') {
+
+    if (location.pathname === "/bucket") {
       fetchData();
     }
   }, [location]);
-  
-useEffect(()=>{
-if(isSigned !== "true"){
-  navigate("/login")
-}
-},[isSigned,navigate])
+
+  useEffect(() => {
+    if (isSigned !== "true") {
+      navigate("/login");
+    }
+  }, [isSigned, navigate]);
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
@@ -55,13 +56,13 @@ if(isSigned !== "true"){
 
   const handleCopyUrl = (url, id) => {
     navigator.clipboard.writeText(url);
-    alert('Image URL copied to clipboard!');
+    alert("Image URL copied to clipboard!");
   };
 
   const handleDelete = async (id) => {
     try {
-      const response = await fetch(`http://localhost:5000/${id}`, {
-        method: 'DELETE',
+      const response = await fetch(`https://bucket-u67q.onrender.com/${id}`, {
+        method: "DELETE",
       });
       if (response.ok) {
         // Remove the deleted item from the data
@@ -69,21 +70,23 @@ if(isSigned !== "true"){
         setData(updatedData);
         const { bucketCount } = await response.json();
         setBucketCount(bucketCount); // Update the bucketCount state with the new value
-        alert('Item deleted successfully!');
+        alert("Item deleted successfully!");
       } else {
-        throw new Error('Failed to delete the item.');
+        throw new Error("Failed to delete the item.");
       }
     } catch (error) {
-      console.error('Error deleting item:', error);
-      alert('Error deleting item. Please try again.');
+      console.error("Error deleting item:", error);
+      alert("Error deleting item. Please try again.");
     }
   };
-  
 
   // Pagination
-  const filteredData = data.length > 0 ? data.filter((item) =>
-  item.filename.toLowerCase().includes(searchTerm.toLowerCase())
-) : [];
+  const filteredData =
+    data.length > 0
+      ? data.filter((item) =>
+          item.filename.toLowerCase().includes(searchTerm.toLowerCase())
+        )
+      : [];
 
   const totalItems = filteredData.length;
   const totalPages = Math.ceil(totalItems / itemsPerPage);
@@ -140,13 +143,11 @@ if(isSigned !== "true"){
           value={searchTerm}
           onChange={handleSearchChange}
         />
-      </form><p>Total Files : {bucketCount}</p> {/* Display the bucketCount here */}
+      </form>
+      <p>Total Files : {bucketCount}</p> {/* Display the bucketCount here */}
       <div className="card-container">
-
-    
         {currentData.map((item) => (
           <div className="card" key={item._id}>
-            
             <img className="card-image" src={item.images} alt={item.filename} />
             <div className="card-content">
               <h3 className="card-title">{item.filename}</h3>
@@ -178,7 +179,7 @@ if(isSigned !== "true"){
           <button
             key={page}
             className={`pagination-button ${
-              page === currentPage ? 'active' : ''
+              page === currentPage ? "active" : ""
             }`}
             onClick={() => handlePageClick(page)}
           >
