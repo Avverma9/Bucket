@@ -1,0 +1,118 @@
+.register-container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .register-field {
+    margin-bottom: 15px;
+  }
+  
+  label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #555;
+  }
+  
+  input[type="text"],
+  input[type="file"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    color: #333;
+  }
+  
+  .register-field:last-child input[type="file"] {
+    padding: 0;
+  }
+  
+  .image-preview {
+    text-align: center;
+    margin-bottom: 15px;
+  }
+  
+  .circular-image {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+  }
+  
+  button[type="submit"],
+  button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    background-color: #4caf50;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: background-color 0.3s ease;
+  }
+  
+  button[type="submit"]:hover,
+  button:hover {
+    background-image: linear-gradient(to right, #3dca2a, rgb(25, 59, 45));
+  }
+  
+  div p {
+    text-align: center;
+    margin-top: 20px;
+    color: #777;
+    font-size: 14px;
+  }
+  
+  div button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #f0f0f0;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    color: #000;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+  }
+  
+  div button:hover {
+    background-color: #e0e0e0;
+  }
+  
+  .error-message {
+    color: #ff0000;
+    font-size: 14px;
+    margin-top: 5px;
+  }
+  
+  .success-message {
+    color: #006600;
+    font-size: 14px;
+    margin-top: 5px;
+  }
+  
+  .invalid-input {
+    border-color: #ff0000;
+  }
+  
+  .invalid-input:focus {
+    box-shadow: 0 0 3px #ff0000;
+  }
+  
+  

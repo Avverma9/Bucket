@@ -1,0 +1,62 @@
+/* Profile.css */
+.profile-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background: linear-gradient(to right, #c6cdd8, #66ccff); /* Background gradient */
+    border-radius: 15px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Slight shadow effect */
+    max-width: 400px;
+    margin: 0 auto;
+  }
+  
+  .profile-image img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 20px;
+    border: 5px solid #fff; 
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  }
+  
+  .profile-info {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  h4 {
+    font-size: 24px;
+    margin-bottom: 5px;
+    color: #333; 
+  }
+  
+  h5 {
+    font-size: 18px;
+    margin-bottom: 5px;
+    color: #666; 
+  }
+  
+  h5::before {
+    content: '\2022';
+    padding-right: 5px;
+  }
+  
+  .logout-button {
+    padding: 10px 20px;
+    width: 100px;
+    font-size: 10px;
+    background-color: #000000;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s ease-in-out;
+  }
+  
+  .logout-button:hover {
+    background-color: #b1a4a4;
+  }
+  
