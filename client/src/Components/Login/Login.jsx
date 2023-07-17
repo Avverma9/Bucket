@@ -54,7 +54,7 @@ const LoginPage = () => {
           />
         </div>
         <input
-          type="password"
+          type={showPassword ? "text" : "password"}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required

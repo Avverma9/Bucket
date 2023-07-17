@@ -31,7 +31,10 @@ const Bucket = () => {
         }
         const { buckets, bucketCount } = await response.json();
         setData(buckets);
-        setBucketCount(bucketCount); // Add this line to set the bucketCount state
+        setBucketCount(bucketCount); // 
+        if(bucketCount === 0){
+          setBucketCount("There is no any data")
+        }
       } catch (error) {
         setError(error.message);
       } finally {
