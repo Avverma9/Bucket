@@ -11,9 +11,9 @@ function App() {
     <Router>
     <Header/>
     <Routes>
-    <Route path='/home' Component={Home}/>
+    <Route path='/' Component={Home}/>
     <Route path='/profile' Component={Profile}/>
-    <Route path='/' Component={RegisterPage}/>
+    <Route path='/register' Component={RegisterPage}/>
     <Route path='/bucket' Component={Bucket}/> <Route path='/login' Component={LoginPage}/>
    </Routes>
   

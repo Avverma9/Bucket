@@ -56,7 +56,7 @@ const Header = () => {
 
               <ul class="dropdown-menu">
                 <li>
-                  <a class="dropdown-item" href="/">
+                  <a class="dropdown-item" href="/register">
                     Resgister Yourself
                   </a>
                 </li>
