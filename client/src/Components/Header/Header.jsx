@@ -23,7 +23,7 @@ const Header = () => {
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
           <ul class="navbar-nav">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="/home">
+              <a class="nav-link active" aria-current="page" href="/">
                 Home
               </a>
             </li>
