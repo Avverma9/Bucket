@@ -24,21 +24,7 @@ const Home = () => {
         body: formData,
       });
 
-  //     if (response.ok) {
-  //       console.log('Data successfully sent to the backend!');
-  //       setIsSuccess(true);
 
-  //       // Hide the success message after 2 seconds
-  //       setTimeout(() => {
-  //         setIsSuccess(false);
-  //       }, 5000);
-  //     } else {
-  //       console.error('Failed to send data to the backend.');
-  //     }
-  //   } catch (error) {
-  //     console.error('Error sending data:', error);
-  //   }
-  // };
   
   if (response.ok) {
     console.log('Data successfully sent to the backend!');

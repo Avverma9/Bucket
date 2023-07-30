@@ -38,33 +38,58 @@ mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.log(err));
 
-const upload = multer({
-  storage: multerS3({
-    s3: s3,
-    bucket: AWS_BUCKET_NAME,
-    acl: 'public-read',
-    key: function (req, file, cb) {
-      cb(null, Date.now() + '-' + file.originalname);
-    }
-  }),
-  fileFilter: (req, file, cb) => {
-    if (file.mimetype.startsWith('image/')) {
-      cb(null, true);
-    } else {
-      cb(new Error('Invalid file type. Only images are allowed.'));
-    }
-  }
-}).array('images', 10);
+// const upload = multer({
+//   storage: multerS3({
+//     s3: s3,
+//     bucket: AWS_BUCKET_NAME,
+//     acl: 'public-read',
+//     key: function (req, file, cb) {
+//       cb(null, Date.now() + '-' + file.originalname);
+//     }
+//   }),
+//   fileFilter: (req, file, cb) => {
+//     if (file.mimetype.startsWith('image/')) {
+//       cb(null, true);
+//     } else {
+//       cb(new Error('Invalid file type. Only images are allowed.'));
+//     }
+//   }
+// }).array('images', 10);
 
 //============================================ User Controller============================================//
-app.post("/register",upload, async (req,res) =>{
-  const {name,email,mobile,password} =req.body
-  const images = req.files.map(file => file.location);
-  const user = new userModel({name,email,mobile,password,images})
- await user.save();
- io.emit("userRegistered",user)
- res.json(user)
-})
+// app.post("/register",upload, async (req,res) =>{
+//   const {name,email,mobile,password} =req.body
+//   const images = req.files.map(file => file.location);
+//   const user = new userModel({name,email,mobile,password,images})
+//  await user.save();
+//  io.emit("userRegistered",user)
+//  res.json(user)
+// })
+// Set up multer storage
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    // Define the destination folder where images will be stored
+    cb(null, "uploads/");
+  },
+  filename: function (req, file, cb) {
+    // Generate a unique filename for each uploaded image
+    cb(null, Date.now() + "-" + file.originalname);
+  },
+});
+
+// Create multer instance with the defined storage
+const upload = multer({ storage: storage });
+
+// Your user registration route with multer middleware
+app.post("/register", upload.array("images", 5), async (req, res) => {
+  const { name, email, mobile, password } = req.body;
+  const images = req.files.map((file) => file.path); // Use file.path to get the stored image paths
+  // Process the user data and save to the database
+  // ...
+
+  res.json({ success: true });
+});
+
 //=======================================user login======================================
 app.post("/signin", async (req, res) => {
   const { email, password } = req.body;
