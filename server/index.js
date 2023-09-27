@@ -18,9 +18,9 @@ const io = new Server(server);
 
 const PORT = process.env.PORT || 5000;
 const MONGO_URI = 'mongodb+srv://Avverma:Avverma95766@avverma.2g4orpk.mongodb.net/storage';
-const AWS_BUCKET_NAME = 'avvermabucket';
-const AWS_ACCESS_KEY_ID = 'AKIARN4LFJPVCZH7XWS7';
-const AWS_SECRET_ACCESS_KEY = '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';
+const AWS_BUCKET_NAME = 'avverma';
+const AWS_ACCESS_KEY_ID = 'AKIARRSTFGSV74HCL27W';
+const AWS_SECRET_ACCESS_KEY = 'pa9q2g1hZKruk0H33+6eRZ7yiGVx/jycGsdpP+4Q';
 const AWS_REGION = 'ap-south-1'; // Update this to the appropriate region for your S3 bucket
 const s3 = new S3Client({
   region: AWS_REGION,
@@ -65,30 +65,7 @@ app.post("/register",upload, async (req,res) =>{
  io.emit("userRegistered",user)
  res.json(user)
 })
-// // Set up multer storage
-// const storage = multer.diskStorage({
-//   destination: function (req, file, cb) {
-//     // Define the destination folder where images will be stored
-//     cb(null, "uploads/");
-//   },
-//   filename: function (req, file, cb) {
-//     // Generate a unique filename for each uploaded image
-//     cb(null, Date.now() + "-" + file.originalname);
-//   },
-// });
 
-// // Create multer instance with the defined storage
-// const upload = multer({ storage: storage });
-
-// // Your user registration route with multer middleware
-// app.post("/register", upload.array("images", 5), async (req, res) => {
-//   const { name, email, mobile, password } = req.body;
-//   const images = req.files.map((file) => file.path); // Use file.path to get the stored image paths
-//   // Process the user data and save to the database
-//   // ...
-
-//   res.json({ success: true });
-// });
 
 //=======================================user login======================================
 app.post("/signin", async (req, res) => {
