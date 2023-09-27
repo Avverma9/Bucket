@@ -8,7 +8,7 @@ const userModel = require("./models/userModel")
 const cors = require('cors');
 const { createServer } = require('http');
 const { Server } = require('socket.io');
-const { S3Client, PutObjectCommand, Type } = require('@aws-sdk/client-s3');
+const { S3Client, PutObjectCommand, Type , DeleteObjectCommand} = require('@aws-sdk/client-s3');
 const multerS3 = require('multer-s3');
 const multer = require('multer');
 
@@ -198,5 +198,8 @@ app.post("/forgetpassword", async (req, res) => {
     res.status(500).json({ error: "An error occurred while processing the request" });
   }
 });
+
+
+
 
 server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
