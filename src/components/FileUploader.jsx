@@ -1,18 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { S3 } from "aws-sdk";
 import {
-  Card,
-  CardContent,
-  CardActions,
-  Typography,
   Button,
-  Grid,
-  Box,
   Container,
+  Box,
+  Typography,
   CircularProgress,
+  TextField,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Checkbox,
+  Paper,
   IconButton,
   Tooltip,
-  TextField,
+  TablePagination,
 } from "@mui/material";
 import { Photo, InsertDriveFile } from "@mui/icons-material";
 import { toast, ToastContainer } from "react-toastify";
@@ -36,6 +41,9 @@ const FileUploader = () => {
   const [continuationToken, setContinuationToken] = useState(null);
   const [hasMore, setHasMore] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedFiles, setSelectedFiles] = useState([]);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
   useEffect(() => {
     fetchFileList();
@@ -103,11 +111,16 @@ const FileUploader = () => {
     });
   };
 
-  const fetchFileList = (token = null) => {
+  const deleteSelectedFiles = () => {
+    selectedFiles.forEach((fileName) => deleteFile(fileName));
+    setSelectedFiles([]);
+  };
+
+  const fetchFileList = () => {
     const params = {
       Bucket: "avverma",
-      MaxKeys: 24, // Number of items per page
-      ...(token ? { ContinuationToken: token } : {}),
+      MaxKeys: 100, // Number of items per request
+      ...(continuationToken ? { ContinuationToken: continuationToken } : {}),
     };
 
     s3.listObjectsV2(params, (err, data) => {
@@ -141,10 +154,39 @@ const FileUploader = () => {
     });
   };
 
-  const loadMoreFiles = () => {
-    if (continuationToken) {
-      fetchFileList(continuationToken);
+  const handleSelectAllClick = (event) => {
+    if (event.target.checked) {
+      setSelectedFiles(displayedFiles.map((file) => file.name));
+    } else {
+      setSelectedFiles([]);
     }
+  };
+
+  const handleClick = (fileName) => {
+    const selectedIndex = selectedFiles.indexOf(fileName);
+    let newSelected = [];
+    if (selectedIndex === -1) {
+      newSelected = newSelected.concat(selectedFiles, fileName);
+    } else if (selectedIndex === 0) {
+      newSelected = newSelected.concat(selectedFiles.slice(1));
+    } else if (selectedIndex === selectedFiles.length - 1) {
+      newSelected = newSelected.concat(selectedFiles.slice(0, -1));
+    } else if (selectedIndex > 0) {
+      newSelected = newSelected.concat(
+        selectedFiles.slice(0, selectedIndex),
+        selectedFiles.slice(selectedIndex + 1)
+      );
+    }
+    setSelectedFiles(newSelected);
+  };
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
   };
 
   return (
@@ -203,108 +245,116 @@ const FileUploader = () => {
         />
       </Box>
 
-      <Typography variant="h5" gutterBottom textAlign="center">
-        Uploaded Files
-      </Typography>
-      <Grid container spacing={2}>
-        {displayedFiles.map((file, index) => (
-          <Grid item xs={12} sm={6} md={4} lg={2} key={index}>
-            <Card
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                height: "100%",
-                boxShadow: 3,
-                borderRadius: 2,
-                overflow: "hidden",
-              }}
-            >
-              <CardContent sx={{ flex: 1, p: 2 }}>
-                <Typography variant="h6" noWrap>
-                  {file.name}
-                </Typography>
-                <Typography color="textSecondary" noWrap>
-                  {new Date(file.lastModified).toLocaleDateString()}
-                </Typography>
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    height: 200,
-                    overflow: "hidden",
-                    mt: 2,
-                    borderRadius: 1,
-                  }}
-                >
-                  {file.name.match(/\.(jpeg|jpg|gif|png)$/) ? (
-                    <img
-                      src={file.url}
-                      alt={file.name}
-                      style={{
-                        width: "100%",
-                        height: "auto",
-                        maxHeight: "100%",
-                        objectFit: "cover",
-                      }}
-                    />
-                  ) : (
-                    <Box
-                      sx={{
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        width: "100%",
-                        height: "100%",
-                        bgcolor: "background.default",
-                      }}
-                    >
-                      <Tooltip title={`File: ${file.name}`} arrow>
-                        <IconButton>
-                          {file.name.match(/\.(pdf)$/) ? (
-                            <InsertDriveFile color="action" fontSize="large" />
-                          ) : (
-                            <Photo color="action" fontSize="large" />
-                          )}
-                        </IconButton>
-                      </Tooltip>
-                    </Box>
-                  )}
-                </Box>
-              </CardContent>
-              <CardActions>
-                <Button
-                  size="small"
-                  color="primary"
-                  href={file.url} // Direct link to download
-                  download={file.name} // Filename for the downloaded file
-                >
-                  Download
-                </Button>
-                <Button
-                  size="small"
-                  color="error"
-                  onClick={() => deleteFile(file.name)}
-                  sx={{ mx: "auto" }}
-                >
-                  Delete
-                </Button>
-              </CardActions>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
-
-      <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
+      <Box mb={2} textAlign="right">
         <Button
           variant="contained"
-          color="primary"
-          onClick={loadMoreFiles}
-          disabled={!hasMore || loading}
+          color="error"
+          onClick={deleteSelectedFiles}
+          disabled={selectedFiles.length === 0}
         >
-          {loading ? <CircularProgress size={24} /> : "Load More"}
+          Delete Selected
         </Button>
       </Box>
+
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell padding="checkbox">
+                <Checkbox
+                  indeterminate={
+                    selectedFiles.length > 0 &&
+                    selectedFiles.length < displayedFiles.length
+                  }
+                  checked={
+                    displayedFiles.length > 0 &&
+                    selectedFiles.length === displayedFiles.length
+                  }
+                  onChange={handleSelectAllClick}
+                />
+              </TableCell>
+              <TableCell>Preview</TableCell>
+              <TableCell>Name</TableCell>
+              <TableCell>Last Modified</TableCell>
+              <TableCell>Actions</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {displayedFiles
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((file) => (
+                <TableRow
+                  key={file.name}
+                  selected={selectedFiles.indexOf(file.name) !== -1}
+                >
+                  <TableCell padding="checkbox">
+                    <Checkbox
+                      checked={selectedFiles.indexOf(file.name) !== -1}
+                      onChange={() => handleClick(file.name)}
+                    />
+                  </TableCell>
+                  <TableCell>
+                    {file.name.match(/\.(jpeg|jpg|gif|png)$/) ? (
+                      <img
+                        src={file.url}
+                        alt={file.name}
+                        className="image-preview"
+                      />
+                    ) : (
+                      <Photo style={{ width: 50, height: 50 }} />
+                    )}
+                  </TableCell>
+                  <TableCell>{file.name}</TableCell>
+                  <TableCell>
+                    {new Date(file.lastModified).toLocaleString()}
+                  </TableCell>
+
+                  <TableCell>
+                    <Tooltip title="Download">
+                      <IconButton
+                        component="a"
+                        href={file.url}
+                        target="_blank"
+                        rel="noopener"
+                      >
+                        <Photo />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Delete">
+                      <IconButton onClick={() => deleteFile(file.name)}>
+                        <InsertDriveFile />
+                      </IconButton>
+                    </Tooltip>
+                  </TableCell>
+                </TableRow>
+              ))}
+          </TableBody>
+        </Table>
+
+        <TablePagination
+          rowsPerPageOptions={[10, 25, 50, 100, 150, 200]}
+          component="div"
+          count={displayedFiles.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      </TableContainer>
+
+      <style jsx>{`
+        .image-preview {
+          width: 50px;
+          height: 50px;
+          border-radius: 50%;
+          object-fit: cover;
+          transition: transform 0.3s ease;
+        }
+        .image-preview:hover {
+          transform: scale(1.5);
+          z-index: 1;
+        }
+      `}</style>
     </Container>
   );
 };
