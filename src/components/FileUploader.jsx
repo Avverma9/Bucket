@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
 import { S3 } from "aws-sdk";
 import {
@@ -92,7 +91,13 @@ const FileUploader = () => {
       if (err) {
         toast.error("Error deleting file. Check console for details.");
       } else {
-        fetchFileList(); // Fetch the updated file list
+        // Remove the deleted file from the state
+        setFileList((prevList) =>
+          prevList.filter((file) => file.name !== fileName)
+        );
+        setDisplayedFiles((prevList) =>
+          prevList.filter((file) => file.name !== fileName)
+        );
         toast.success("File deleted successfully.");
       }
     });
@@ -115,7 +120,7 @@ const FileUploader = () => {
           url: s3.getSignedUrl("getObject", {
             Bucket: "avverma",
             Key: item.Key,
-            Expires: 60 * 5,
+            Expires: 60 * 5, // URL expires in 5 minutes
           }),
         }));
 
@@ -147,7 +152,7 @@ const FileUploader = () => {
       <ToastContainer />
       <Box textAlign="center" mb={4}>
         <Typography variant="h4" gutterBottom>
-         Bucket Manager
+          Bucket Manager
         </Typography>
         <input
           type="file"
@@ -268,6 +273,14 @@ const FileUploader = () => {
                 </Box>
               </CardContent>
               <CardActions>
+                <Button
+                  size="small"
+                  color="primary"
+                  href={file.url} // Direct link to download
+                  download={file.name} // Filename for the downloaded file
+                >
+                  Download
+                </Button>
                 <Button
                   size="small"
                   color="error"
