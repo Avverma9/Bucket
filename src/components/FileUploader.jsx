@@ -219,7 +219,6 @@ const FileUploader = () => {
                   {file.name}
                 </Typography>
                 <Typography color="textSecondary" noWrap>
-                  Uploaded on:{" "}
                   {new Date(file.lastModified).toLocaleDateString()}
                 </Typography>
                 <Box
