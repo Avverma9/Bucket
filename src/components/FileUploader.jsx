@@ -21,6 +21,7 @@ import {
   TablePagination,
   Toolbar,
   AppBar,
+  LinearProgress,
 } from "@mui/material";
 import { Photo, InsertDriveFile } from "@mui/icons-material";
 import { toast, ToastContainer } from "react-toastify";
@@ -191,7 +192,13 @@ const FileUploader = () => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-
+if (displayedFiles?.length===0) {
+  return (
+    <div>
+      <LinearProgress />
+    </div>
+  );
+}
   return (
     <Container maxWidth="lg" sx={{ mt: 4 }}>
       <ToastContainer />
