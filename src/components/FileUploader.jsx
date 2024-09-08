@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { AiTwotoneDelete } from "react-icons/ai";
 import { S3 } from "aws-sdk";
 import {
   Button,
@@ -18,6 +19,8 @@ import {
   IconButton,
   Tooltip,
   TablePagination,
+  Toolbar,
+  AppBar,
 } from "@mui/material";
 import { Photo, InsertDriveFile } from "@mui/icons-material";
 import { toast, ToastContainer } from "react-toastify";
@@ -119,7 +122,7 @@ const FileUploader = () => {
   const fetchFileList = () => {
     const params = {
       Bucket: "avverma",
-      MaxKeys: 100, // Number of items per request
+      MaxKeys: 1000, // Number of items per request
       ...(continuationToken ? { ContinuationToken: continuationToken } : {}),
     };
 
@@ -234,27 +237,27 @@ const FileUploader = () => {
         </Typography>
       )}
 
-      <Box mb={4}>
-        <TextField
-          label="Search"
-          variant="outlined"
-          fullWidth
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          sx={{ mb: 2 }}
-        />
-      </Box>
-
-      <Box mb={2} textAlign="right">
-        <Button
-          variant="contained"
-          color="error"
-          onClick={deleteSelectedFiles}
-          disabled={selectedFiles.length === 0}
-        >
-          Delete Selected
-        </Button>
-      </Box>
+      <AppBar position="static" color="default" sx={{ mb: 2 }}>
+        <Toolbar>
+          <TextField
+            label="Search"
+            variant="outlined"
+            size="small"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            sx={{ mr: 2, flex: 1 }}
+          />
+          <Button
+            variant="contained"
+            color="error"
+            onClick={deleteSelectedFiles}
+            disabled={selectedFiles.length === 0}
+            sx={{ ml: 2 }}
+          >
+            Delete Selected
+          </Button>
+        </Toolbar>
+      </AppBar>
 
       <TableContainer component={Paper}>
         <Table>
@@ -322,7 +325,7 @@ const FileUploader = () => {
                     </Tooltip>
                     <Tooltip title="Delete">
                       <IconButton onClick={() => deleteFile(file.name)}>
-                        <InsertDriveFile />
+                        <AiTwotoneDelete />
                       </IconButton>
                     </Tooltip>
                   </TableCell>
