@@ -8,22 +8,15 @@ import {
   Typography,
   CircularProgress,
   TextField,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Checkbox,
-  Paper,
+  Grid,
   IconButton,
   Tooltip,
-  TablePagination,
-  Toolbar,
   AppBar,
+  Toolbar,
   LinearProgress,
+  Checkbox,
 } from "@mui/material";
-import { Photo, InsertDriveFile } from "@mui/icons-material";
+import { Photo } from "@mui/icons-material";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -47,7 +40,7 @@ const FileUploader = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [rowsPerPage, setRowsPerPage] = useState(20); // Show 20 files per page
 
   useEffect(() => {
     fetchFileList();
@@ -184,26 +177,19 @@ const FileUploader = () => {
     setSelectedFiles(newSelected);
   };
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
+  if (displayedFiles?.length === 0) {
+    return (
+      <div>
+        <LinearProgress />
+      </div>
+    );
+  }
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
-if (displayedFiles?.length===0) {
-  return (
-    <div>
-      <LinearProgress />
-    </div>
-  );
-}
   return (
     <Container maxWidth="lg" sx={{ mt: 4 }}>
       <ToastContainer />
       <Box textAlign="center" mb={4}>
-        <Typography variant="h4" gutterBottom>
+        <Typography variant="h6" gutterBottom>
           Bucket Manager
         </Typography>
         <input
@@ -266,105 +252,105 @@ if (displayedFiles?.length===0) {
         </Toolbar>
       </AppBar>
 
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell padding="checkbox">
-                <Checkbox
-                  indeterminate={
-                    selectedFiles.length > 0 &&
-                    selectedFiles.length < displayedFiles.length
-                  }
-                  checked={
-                    displayedFiles.length > 0 &&
-                    selectedFiles.length === displayedFiles.length
-                  }
-                  onChange={handleSelectAllClick}
-                />
-              </TableCell>
-              <TableCell>Preview</TableCell>
-              <TableCell>Name</TableCell>
-              <TableCell>Last Modified</TableCell>
-              <TableCell>Actions</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {displayedFiles
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((file) => (
-                <TableRow
-                  key={file.name}
-                  selected={selectedFiles.indexOf(file.name) !== -1}
+      <Grid container spacing={2}>
+        {displayedFiles
+          .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+          .map((file) => (
+            <Grid item xs={12} sm={6} md={4} lg={3} key={file.name}>
+              <Box
+                sx={{
+                  border: "1px solid #ddd",
+                  borderRadius: 2,
+                  padding: 2,
+                  position: "relative",
+                  textAlign: "center",
+                  height: 250, // Fixed height
+                }}
+              >
+                <Box
+                  sx={{
+                    position: "absolute",
+                    top: 8,
+                    right: 8,
+                    zIndex: 1,
+                  }}
                 >
-                  <TableCell padding="checkbox">
-                    <Checkbox
-                      checked={selectedFiles.indexOf(file.name) !== -1}
-                      onChange={() => handleClick(file.name)}
-                    />
-                  </TableCell>
-                  <TableCell>
+                  <Checkbox
+                    checked={selectedFiles.indexOf(file.name) !== -1}
+                    onChange={() => handleClick(file.name)}
+                  />
+                </Box>
+                <Tooltip title={file.name}>
+                  <Box
+                    sx={{
+                      width: "100%",
+                      height: "150px", // Fixed height
+                      overflow: "hidden",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
                     {file.name.match(/\.(jpeg|jpg|gif|png)$/) ? (
                       <img
                         src={file.url}
                         alt={file.name}
-                        className="image-preview"
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          objectFit: "cover",
+                        }}
                       />
                     ) : (
-                      <Photo style={{ width: 50, height: 50 }} />
+                      <Photo style={{ width: 100, height: 100 }} />
                     )}
-                  </TableCell>
-                  <TableCell>{file.name}</TableCell>
-                  <TableCell>
-                    {new Date(file.lastModified).toLocaleString()}
-                  </TableCell>
+                  </Box>
+                </Tooltip>
+                <Typography variant="subtitle1" sx={{ mt: 1 }}>
+                  {file?.name?.slice(0, 20)}
+                </Typography>
+                <Typography variant="body2" color="textSecondary">
+                  {new Date(file.lastModified).toLocaleString()}
+                </Typography>
+                <Box mt={1}>
+                  <Tooltip title="Download">
+                    <IconButton
+                      component="a"
+                      href={file.url}
+                      target="_blank"
+                      rel="noopener"
+                    >
+                      <Photo />
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title="Delete">
+                    <IconButton onClick={() => deleteFile(file.name)}>
+                      <AiTwotoneDelete />
+                    </IconButton>
+                  </Tooltip>
+                </Box>
+              </Box>
+            </Grid>
+          ))}
+      </Grid>
 
-                  <TableCell>
-                    <Tooltip title="Download">
-                      <IconButton
-                        component="a"
-                        href={file.url}
-                        target="_blank"
-                        rel="noopener"
-                      >
-                        <Photo />
-                      </IconButton>
-                    </Tooltip>
-                    <Tooltip title="Delete">
-                      <IconButton onClick={() => deleteFile(file.name)}>
-                        <AiTwotoneDelete />
-                      </IconButton>
-                    </Tooltip>
-                  </TableCell>
-                </TableRow>
-              ))}
-          </TableBody>
-        </Table>
-
-        <TablePagination
-          rowsPerPageOptions={[10, 25, 50, 100, 150, 200]}
-          component="div"
-          count={displayedFiles.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
-      </TableContainer>
-
-      <style jsx>{`
-        .image-preview {
-          width: 50px;
-          height: 50px;
-          border-radius: 50%;
-          object-fit: cover;
-          transition: transform 0.3s ease;
-        }
-        .image-preview:hover {
-          transform: scale(1.5);
-          z-index: 1;
-        }
-      `}</style>
+      <Box sx={{ mt: 2, display: "flex", justifyContent: "center" }}>
+        <Button
+          variant="contained"
+          onClick={() => setPage(page - 1)}
+          disabled={page === 0}
+        >
+          Previous
+        </Button>
+        <Button
+          variant="contained"
+          onClick={() => setPage(page + 1)}
+          disabled={!hasMore}
+          sx={{ ml: 2 }}
+        >
+          Next
+        </Button>
+      </Box>
     </Container>
   );
 };
